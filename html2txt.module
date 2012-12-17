@@ -1,0 +1,94 @@
+<?php
+/**
+ * @file
+ * Module that craetes a form interface to the function drupal_html_to_text.
+ * http://is.gd/dkKQaj
+ */
+
+
+/**
+ * Implements hook_help().
+ */
+function html2txt_help($section) {
+  switch ($section) {
+    case 'admin/help#html2txt':
+      $output = '<p>' . t('The <strong>Html2Txt</strong> module is a simple interface to Drupal\'s <tt>drupal_html_to_text</tt> function.  It lets you paste HTML into a form and convert it to formatted text.') . '</p>';
+      return $output;
+  }
+}
+
+
+/**
+ * Implements hook_menu().
+ */
+function html2txt_menu() {
+  $items = array();
+  $items['html2txt'] = array(
+    'title' => 'HTML to text',
+    'description' => 'Example demonstrating the form API.',
+    'page callback' => 'html2txt_page',
+    'access callback' => true,
+  );
+  return $items;
+}
+
+/**
+ * Simple page for displaying the form.
+ */
+function html2txt_page() {
+  $build = array(
+    'header_text' => array (
+      '#type' => 'markup',
+      '#markup' => '<p>Uses Drupal\'s function <em>drupal_html_to_text</em> to convert HTML to text.</p>',
+    ),
+    'example_form' => drupal_get_form('html2txt_form'),
+  );
+  return $build;
+}
+
+
+/**
+ * Form definition.
+ */
+function html2txt_form($form, &$form_state) {
+  $form['html'] = array(
+    '#title'  => 'Text area:',
+    '#type'   => 'textarea',
+    '#cols'   => 60,
+    '#rows'   => 25,
+    '#required'  => true,
+    '#description'  => 'Cut and paste the HTML you want to convert into the text area above.',
+  );
+  $form['submit'] = array(
+    '#type'  => 'submit',
+    '#value' => 'Submit',
+  );
+  if (isset($form_state['values']['html'])) {
+    $form['html']['#value'] = $form_state['values']['html'];
+    $form['html']['#description']  = 'The converted HTML is in the text area above.';
+  }
+  return $form;
+}
+
+
+/**
+ * Server side validation handler.
+ * Placeholder, not used here.
+ */
+function html2txt_form_validate($form, &$form_state) {
+  /*
+  if ($form_state['values']['html'] != 'I like Ike.') {
+    form_set_error('html', 'Sorry.  Try: I like Ike.');
+  }
+  */
+}
+
+
+/**
+ * Submit handler,
+ */
+function html2txt_form_submit($form, &$form_state) {
+  drupal_set_message(t('Text to be converted was submitted.'));
+  $form_state['values']['html'] = drupal_html_to_text($form_state['values']['html']);
+  $form_state['rebuild'] = TRUE;
+}

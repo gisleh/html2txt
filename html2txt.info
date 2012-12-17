@@ -1,0 +1,4 @@
+name = HTML to Text
+description = Converts HTML into plain text.
+core = 7.x
+
