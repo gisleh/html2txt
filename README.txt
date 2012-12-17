@@ -4,8 +4,8 @@ README.txt for Html to Text
 This is a Drupal 7 custom module that converts HTML/XHTML to formatted
 text.
 
-It is also a simple demonstration of how a moduke may interact with
-the Drupal 7 form API.
+It is also a simple demonstration of how a Drupal 7 module may
+interact with the form API.
 
 
 Installation
